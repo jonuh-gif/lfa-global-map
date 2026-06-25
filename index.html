@@ -17,13 +17,8 @@ href="https://unpkg.com/leaflet/dist/leaflet.css"/>
     box-sizing:border-box;
 }
 
-html,
 body{
 
-    margin:0;
-    padding:0;
-    overflow-x:hidden;
-    overflow-y:hidden;
     font-family:Arial,Helvetica,sans-serif;
     background:#f7f8fa;
     color:#233244;
@@ -38,6 +33,8 @@ body{
     padding:35px 0 40px;
 
 }
+
+h1{
 
     text-align:center;
     font-size:48px;
@@ -57,22 +54,26 @@ body{
 
 #map{
 
-width:100%;
-height:430px;
-border-radius:16px;
-overflow:hidden;
-box-shadow:0 10px 35px rgba(0,0,0,.15);
+    width:100%;
+    height:520px;
 
+    border-radius:16px;
+
+    overflow:hidden;
+
+    box-shadow:0 10px 35px rgba(0,0,0,.15);
 
 }
 
 .office-section{
 
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:40px;
-margin-top:20px;
+    display:grid;
 
+    grid-template-columns:1fr 1fr;
+
+    gap:70px;
+
+    margin-top:40px;
 
 }
 
@@ -88,11 +89,19 @@ margin-top:20px;
 
 .office-card{
 
-background:white;
-padding:15px;
-margin-bottom:15px;
-border-radius:10px;
-box-shadow:0 3px 12px rgba(0,0,0,.08);
+    background:#fff;
+
+    padding:18px;
+
+    margin-bottom:18px;
+
+    border-radius:12px;
+
+    box-shadow:0 5px 18px rgba(0,0,0,.08);
+
+    transition:.25s;
+
+    cursor:pointer;
 
 }
 
@@ -178,7 +187,6 @@ height:420px;
 
 <div class="container">
 
-
 <p class="subtitle">
 Click any office marker to zoom in and view details.
 </p>
@@ -221,11 +229,11 @@ attribution:'© OpenStreetMap contributors'
 ).addTo(map);
 
 const offices = [{
-name:"MAIN OFFICE",
+name:"Main Office",
 lat:33.91966,
 lng:-118.41596,
 address:"319 Main Street, El Segundo, CA 90245",
-"(213) 239 9700",
+phone:"(213) 239-9700",
 street:"https://www.google.com/maps/place/319+Main+Street+El+Segundo,+CA+90245/@33.91966,-118.4159614,3a,75y,277.33h,90t/data=!3m4!1e1!3m2!1sZ9fj4HXJO25oyBkhj-GVkg!2e0!4m2!3m1!1s0x80c2b141d5656a41:0x215dbf331db5f69d"
 },
 
@@ -234,7 +242,7 @@ name:"Glendale Office",
 lat:34.15328,
 lng:-118.25498,
 address:"505 N Brand Blvd, Suite 800, Glendale, CA 91203",
-"(626) 351 3367",
+phone:"(626) 351-3367",
 street:"https://www.google.com/maps/@34.1532819,-118.254981,3a,75y,338.33h,105.31t"
 },
 
@@ -243,7 +251,7 @@ name:"Orange County Office",
 lat:33.68453,
 lng:-117.85451,
 address:"1900 Main Street, Suite 800, Irvine, CA 92614",
-"(949) 576 3922",
+phone:"(949) 576-3922",
 street:"https://www.google.com/maps/@33.6845337,-117.8545141,3a,75y,307.57h,81.7t"
 },
 
@@ -252,6 +260,7 @@ name:"San Diego Office",
 lat:32.71360,
 lng:-117.16433,
 address:"185 F Street, Suite 500, San Diego, CA 92101",
+phone:"(619) 560-0080",
 street:"https://www.google.com/maps/@32.7136013,-117.1643347,3a,75y,353.46h,90.57t"
 },
 
