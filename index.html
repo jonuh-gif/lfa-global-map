@@ -1,57 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>LFA Global Office Map</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<style>
+html, body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    font-family:Arial, sans-serif;
+}
+
+#map{
+    width:100%;
+    height:100vh;
+}
+
+.leaflet-popup-content{
+    font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+
+const map = L.map('map').setView([25,0], 2);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'&copy; OpenStreetMap contributors'
+}).addTo(map);
+
 const offices = [
 
 {
 name:"USA Headquarters",
-lat:33.9192,
-lng:-118.4165,
-zoom:19,
+lat:33.91966,
+lng:-118.41596,
 address:"319 Main Street, El Segundo, CA 90245",
-street:"https://www.google.com/maps/place/319+Main+Street+El+Segundo,+CA+90245/@33.91966,-118.4159614,3a,75y,277.33h,90t/data=!3m4!1e1!3m2!1sZ9fj4HXJO25oyBkhj-GVkg!2e0!4m2!3m1!1s0x80c2b141d5656a41:0x215dbf331db5f69d"
+streetview:"https://www.google.com/maps/place/319+Main+Street+El+Segundo,+CA+90245/"
 },
 
 {
 name:"Glendale Office",
-lat:34.1532,
-lng:-118.2550,
-zoom:19,
-address:"505 N Brand Blvd, Suite 800, Glendale, CA 91203",
-street:"https://www.google.com/maps/@34.1532819,-118.254981,3a,75y,338.33h,105.31t/data=!3m7!1e1!3m5!1s0GxSbcypIfoSjBKl2ESMYA!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-15.306711591767694%26panoid%3D0GxSbcypIfoSjBKl2ESMYA%26yaw%3D338.3339971136824!7i16384!8i8192"
+lat:34.15328,
+lng:-118.25498,
+address:"505 N Brand Blvd, Suite 820, Glendale, CA 91203",
+streetview:"https://www.google.com/maps/@34.1532819,-118.254981,3a,75y,338.33h,105.31t"
 },
 
 {
 name:"Orange County Office",
-lat:33.6845,
-lng:-117.8545,
-zoom:19,
-address:"1900 Main Street, Suite 800, Irvine, CA 92614",
-street:"https://www.google.com/maps/@33.6845337,-117.8545141,3a,75y,307.57h,81.7t/data=!3m7!1e1!3m5!1sPFAzXFBw5qFbxeN7siMryw!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D8.298614591767674%26panoid%3DPFAzXFBw5qFbxeN7siMryw%26yaw%3D307.5697527197117!7i16384!8i8192"
+lat:33.68453,
+lng:-117.85451,
+address:"1920 Main Street, Suite 920, Irvine, CA 92614",
+streetview:"https://www.google.com/maps/@33.6845337,-117.8545141,3a,75y,307.57h,81.7t"
 },
 
 {
 name:"San Diego Office",
-lat:32.7136,
-lng:-117.1643,
-zoom:19,
-address:"185 F Street, Suite 500, San Diego, CA 92101",
-street:"https://www.google.com/maps/@32.7136013,-117.1643347,3a,75y,353.46h,90.57t/data=!3m7!1e1!3m5!1sRp_3eAXcVcORa5Qf_1ycNw!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-0.5701747272880198%26panoid%3DRp_3eAXcVcORa5Qf_1ycNw%26yaw%3D353.4639194944201!7i16384!8i8192"
+lat:32.71360,
+lng:-117.16433,
+address:"135 F Street, Suite 500, San Diego, CA 92101",
+streetview:"https://www.google.com/maps/@32.7136013,-117.1643347,3a,75y,353.46h,90.57t"
 },
 
 {
 name:"India Office",
-lat:13.0500,
-lng:80.2700,
-zoom:17,
-address:"No.111 (141), Rajiv Gandhi Road, Kottivakkam, Chennai 600041",
-street:"https://www.google.com/maps/search/?api=1&query=Rajiv+Gandhi+Road+Chennai"
+lat:13.0827,
+lng:80.2707,
+address:"Chennai, India",
+streetview:"https://www.google.com/maps"
 },
 
 {
 name:"Egypt Office",
-lat:30.1120,
-lng:31.4000,
-zoom:17,
-address:"Plot 1258, Building 6C, Office No.102, Sheraton, Cairo 11799",
-street:"https://www.google.com/maps/search/?api=1&query=Sheraton+Cairo+11799"
+lat:30.0444,
+lng:31.2357,
+address:"Cairo, Egypt",
+streetview:"https://www.google.com/maps"
 }
 
 ];
+
+offices.forEach(function(office){
+
+L.circleMarker(
+    [office.lat, office.lng],
+    {
+        radius:8,
+        color:"#ffffff",
+        weight:2,
+        fillColor:"#e63946",
+        fillOpacity:1
+    }
+)
+.addTo(map)
+.bindPopup(`
+    <b>${office.name}</b><br>
+    ${office.address}<br><br>
+    <a href="${office.streetview}" target="_blank">
+    View Office
+    </a>
+`);
+
+});
+
+</script>
+
+</body>
+</html>
