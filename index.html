@@ -159,23 +159,42 @@ h1{
 
 @media(max-width:900px){
 
-.office-section{
+const markers = [];
 
-grid-template-columns:1fr;
+offices.forEach((office, index) => {
 
-}
+    const marker = L.circleMarker([office.lat, office.lng], {
+        radius:6,
+        color:"#ffffff",
+        weight:2,
+        fillColor:"#d60000",
+        fillOpacity:1
+    }).addTo(map);
 
-h1{
+    marker.bindPopup(`
+        <div style="min-width:220px">
+            <h3 style="margin-bottom:8px">${office.name}</h3>
 
-font-size:36px;
+            <p>${office.address}</p>
 
-}
+            <a href="${office.street}"
+               target="_blank"
+               style="
+                display:inline-block;
+                margin-top:10px;
+                background:#b30000;
+                color:white;
+                text-decoration:none;
+                padding:10px 16px;
+                border-radius:6px;">
+                View Street View
+            </a>
+        </div>
+    `);
 
-#map{
+    markers.push(marker);
 
-height:420px;
-
-}
+});
 
 }
 
@@ -347,66 +366,110 @@ offices.forEach(office=>{
 
 });
 
-function buildCards(list,id){
+function buildCards(list,id,startIndex){
 
-const container=document.getElementById(id);
+    const container=document.getElementById(id);
 
-list.forEach(office=>{
+    list.forEach((office,i)=>{
 
-const card=document.createElement("div");
+        const marker = markers[startIndex+i];
 
-card.className="office-card";
+        const card=document.createElement("div");
 
-card.innerHTML=`
+        card.className="office-card";
 
-<h3>${office.name}</h3>
+        card.innerHTML=`
+            <h3>${office.name}</h3>
+            <p>${office.address}</p>
+            <button>View Street View</button>
+        `;
 
-<p>
+        card.querySelector("button").onclick=function(e){
 
-${office.address}
+            e.stopPropagation();
 
-</p>
+            window.open(
+                office.street,
+                "_blank"
+            );
 
-<button>
+        };
 
-View Street View
+        // Hover
+        card.addEventListener("mouseenter",()=>{
 
-</button>
+            map.flyTo(
+                [office.lat,office.lng],
+                16,
+                {
+                    duration:1.2
+                }
+            );
 
-`;
+            marker.setStyle({
+                radius:12,
+                fillColor:"#ff0000",
+                color:"#ffffff",
+                weight:3
+            });
 
-card.querySelector("button").onclick=function(){
+            marker.openPopup();
 
-window.open(
-office.street,
-"_blank"
-);
+        });
 
-};
+        // Mouse leave
+        card.addEventListener("mouseleave",()=>{
 
-card.onclick=function(){
+            map.flyTo(
+                [25,10],
+                2,
+                {
+                    duration:1
+                }
+            );
 
-zoomOffice(
-office.lat,
-office.lng
-);
+            marker.closePopup();
 
-};
+            marker.setStyle({
+                radius:6,
+                fillColor:"#d60000",
+                color:"#ffffff",
+                weight:2
+            });
 
-container.appendChild(card);
+        });
 
-});
+        // Click
+        card.onclick=function(){
+
+            map.flyTo(
+                [office.lat,office.lng],
+                17,
+                {
+                    duration:1.5
+                }
+            );
+
+            marker.openPopup();
+
+        };
+
+        container.appendChild(card);
+
+    });
 
 }
 
 buildCards(
-offices.slice(0,4),
-"us-offices"
+    offices.slice(0,4),
+    "us-offices",
+    0
 );
 
 buildCards(
-offices.slice(4),
-"international-offices"
+    offices.slice(4),
+    "international-offices",
+    4
 );
 
 </script>
