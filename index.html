@@ -1,11 +1,286 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>LFA Global Map</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LFA Global Office Map</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:#fff;
+}
+
+h1{
+    text-align:center;
+    margin-top:30px;
+    color:#1f2d3d;
+}
+
+.subtitle{
+    text-align:center;
+    color:#666;
+    margin-bottom:20px;
+}
+
+#map{
+    width:90%;
+    height:650px;
+    margin:auto;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 5px 20px rgba(0,0,0,.15);
+}
+
+.return-btn{
+    display:none;
+    margin:25px auto;
+    padding:12px 25px;
+    background:#d62828;
+    color:white;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:15px;
+}
+
+.return-btn:hover{
+    background:#b71c1c;
+}
+
+.office-directory{
+    width:90%;
+    margin:50px auto;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:60px;
+}
+
+.office-directory h3{
+    color:#1f2d3d;
+    margin-bottom:15px;
+}
+
+.office{
+    margin-bottom:25px;
+    line-height:1.7;
+}
+
+.street-btn{
+    display:inline-block;
+    background:#d62828;
+    color:#fff;
+    text-decoration:none;
+    padding:8px 14px;
+    border-radius:5px;
+    margin-top:10px;
+}
+
+.street-btn:hover{
+    background:#b71c1c;
+}
+
+.custom-marker{
+    width:10px !important;
+    height:10px !important;
+    background:red;
+    border:2px solid white;
+    border-radius:50%;
+    box-shadow:0 0 10px rgba(255,0,0,.8);
+}
+</style>
 </head>
+
 <body>
-<p>GitHub Pages Test</p>
-<h1>LFA Global Office Map</h1>
+
+<h1>Global Presence</h1>
+<p class="subtitle">Click any office marker to zoom in and view details.</p>
+
+<div id="map"></div>
+
+<button id="returnBtn" class="return-btn">
+Return to Global View
+</button>
+
+<div class="office-directory">
+
+<div>
+<h3>Southern California Locations</h3>
+
+<div class="office">
+<strong>MAIN OFFICE</strong><br>
+(213) 239-9700<br>
+319 Main Street<br>
+El Segundo, CA 90245
+</div>
+
+<div class="office">
+<strong>GLENDALE</strong><br>
+(626) 351-3367<br>
+505 N Brand Blvd, Suite 800<br>
+Glendale, CA 91203
+</div>
+
+<div class="office">
+<strong>ORANGE COUNTY</strong><br>
+(949) 576-3922<br>
+1900 Main Street, Suite 800<br>
+Irvine, CA 92614
+</div>
+
+<div class="office">
+<strong>SAN DIEGO</strong><br>
+(619) 560-0080<br>
+185 F Street, Suite 500<br>
+San Diego, CA 92101
+</div>
+
+</div>
+
+<div>
+
+<h3>International Locations</h3>
+
+<div class="office">
+<strong>INDIA</strong><br>
+Labib Funk & Associates India Pvt. Ltd.<br>
+No.111 (141), Rajiv Gandhi Road<br>
+Kottivakkam, Chennai 600041
+</div>
+
+<div class="office">
+<strong>EGYPT</strong><br>
+Labib Funk & Associates Egypt<br>
+Plot 1258, Building 6C, Office No.102<br>
+Sheraton, Cairo 11799
+</div>
+
+</div>
+
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+
+const map = L.map('map').setView([25,10],2);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'© OpenStreetMap'
+}).addTo(map);
+
+const redIcon = L.divIcon({
+    className:'custom-marker',
+    iconSize:[10,10]
+});
+
+const globalView = {
+    center:[25,10],
+    zoom:2
+};
+
+const returnBtn = document.getElementById('returnBtn');
+
+function zoomToOffice(lat,lng,zoom){
+    map.setView([lat,lng],zoom);
+    returnBtn.style.display='block';
+}
+
+returnBtn.addEventListener('click',()=>{
+    map.setView(globalView.center,globalView.zoom);
+    returnBtn.style.display='none';
+});
+
+const offices = [
+
+{
+name:"USA Headquarters",
+lat:33.9192,
+lng:-118.4165,
+zoom:17,
+address:"319 Main Street, El Segundo, CA",
+street:"https://www.google.com/maps?q=319+Main+Street+El+Segundo+CA&layer=c"
+},
+
+{
+name:"Glendale Office",
+lat:34.1517,
+lng:-118.2551,
+zoom:17,
+address:"505 N Brand Blvd, Suite 800, Glendale, CA",
+street:"https://www.google.com/maps?q=505+N+Brand+Blvd+Glendale+CA&layer=c"
+},
+
+{
+name:"Orange County Office",
+lat:33.6839,
+lng:-117.8520,
+zoom:17,
+address:"1900 Main Street, Suite 800, Irvine, CA",
+street:"https://www.google.com/maps?q=1900+Main+Street+Irvine+CA&layer=c"
+},
+
+{
+name:"San Diego Office",
+lat:32.7100,
+lng:-117.1600,
+zoom:17,
+address:"185 F Street, Suite 500, San Diego, CA",
+street:"https://www.google.com/maps?q=185+F+Street+San+Diego+CA&layer=c"
+},
+
+{
+name:"India Office",
+lat:12.9695,
+lng:80.2595,
+zoom:17,
+address:"Rajiv Gandhi Road, Chennai",
+street:"https://www.google.com/maps?q=Rajiv+Gandhi+Road+Chennai&layer=c"
+},
+
+{
+name:"Egypt Office",
+lat:30.1120,
+lng:31.3900,
+zoom:17,
+address:"Sheraton, Cairo 11799",
+street:"https://www.google.com/maps?q=Sheraton+Cairo+11799&layer=c"
+}
+
+];
+
+offices.forEach(office=>{
+
+const marker = L.marker(
+    [office.lat,office.lng],
+    {icon:redIcon}
+).addTo(map);
+
+marker.bindPopup(`
+<b>${office.name}</b><br>
+${office.address}<br><br>
+
+<a href="${office.street}"
+target="_blank"
+class="street-btn">
+View Street View
+</a>
+`);
+
+marker.on('click',()=>{
+    zoomToOffice(
+        office.lat,
+        office.lng,
+        office.zoom
+    );
+});
+
+});
+
+</script>
 
 </body>
 </html>
