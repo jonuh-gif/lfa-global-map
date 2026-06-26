@@ -163,28 +163,31 @@ name: "San Diego Office",
     map: "https://maps.google.com/?q=185+F+Street+Suite+500+San+Diego+CA"
 },
 {
-name:"India Office",
-lat:13.0827,
-lng:80.2707,
-address:"No.111 (141), Rajiv Gandhi Road, Kottivakkam, Chennai 600041",
-street:"https://www.google.com/maps/search/?api=1&query=Rajiv+Gandhi+Road+Chennai",
+    name:"India Office",
+    region:"International",
+    lat:13.0827,
+    lng:80.2707,
+    address:"No.111 (141), Rajiv Gandhi Road, Kottivakkam, Chennai 600041",
+    phone:"",
+    map:"https://www.google.com/maps/search/?api=1&query=Rajiv+Gandhi+Road+Chennai"
 },
 {
-name:"Egypt Office",
-lat:30.1120,
-lng:31.4000,
-address:"Plot 1258, Building 6C, Office No.102, Sheraton, Cairo 11799",
-street:"https://www.google.com/maps/search/?api=1&query=Sheraton+Cairo+11799",
-}
+    name:"Egypt Office",
+    region:"International",
+    lat:30.1120,
+    lng:31.4000,
+    address:"Plot 1258, Building 6C, Office No.102, Sheraton, Cairo 11799",
+    phone:"",
+    map:"https://www.google.com/maps/search/?api=1&query=Sheraton+Cairo+11799"
+},
 {
-    id: "vietnam",
-    name: "Vietnam Office",
-    region: "International",
-    lat: 10.8016,
-    lng: 106.6538,
-    address: "TTC Tower, 253 Hoang Van Thu St, Tan Son Hoa Ward, Ho Chi Minh City, Vietnam",
-    phone: "",
-    map: "https://maps.google.com/?q=TTC+Tower+253+Hoang+Van+Thu+Ho+Chi+Minh+City+Vietnam"
+    name:"Vietnam Office",
+    region:"International",
+    lat:10.8016,
+    lng:106.6538,
+    address:"TTC Tower, 253 Hoang Van Thu St, Tan Son Hoa Ward, Ho Chi Minh City, Vietnam",
+    phone:"",
+    map:"https://www.google.com/maps/search/?api=1&query=TTC+Tower+253+Hoang+Van+Thu+Ho+Chi+Minh+City+Vietnam"
 },
 ];
 const icon = L.circleMarker([0,0],{
@@ -217,7 +220,7 @@ offices.forEach(office=>{
         ${office.address}
         </p>
         <a
-        href="${office.street}"
+        href="${office.map}"
         target="_blank"
         style="
         display:inline-block;
@@ -240,24 +243,52 @@ offices.forEach(office=>{
     });
 });
 function buildCards(list,id){
+
 const container=document.getElementById(id);
+
 list.forEach(office=>{
+
 const card=document.createElement("div");
+
 card.className="office-card";
-card.innerHTML = `
-    <h4>${location.name}</h4>
 
-    <p>${location.address}</p>
+card.innerHTML=`
 
-    <a href="${location.map}" target="_blank" class="street-btn">
-        View Street View
-    </a>
+<h3>${office.name}</h3>
 
-    ${
-        location.phone
-            ? `<div class="office-phone">${location.phone}</div>`
-            : ""
-    }
+<p>${office.address}</p>
+
+<a href="${office.map}"
+target="_blank"
+class="street-btn">
+View Street View
+</a>
+
+${office.phone ? `
+<div class="office-phone">
+📞 ${office.phone}
+</div>
+` : ""}
+
+`;
+
+card.onclick=function(e){
+
+// don't zoom if user clicked the button
+if(e.target.tagName==="A") return;
+
+zoomOffice(
+office.lat,
+office.lng
+);
+
+};
+
+container.appendChild(card);
+
+});
+
+}
 `;
 card.querySelector("button").onclick=function(){
 window.open(
