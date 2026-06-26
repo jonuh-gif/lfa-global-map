@@ -88,6 +88,14 @@ h1{
 .office-card button:hover{
     background:#8e0000;
 }
+    .office-phone{
+    margin-top:12px;
+    padding-top:12px;
+    border-top:1px solid #e5e5e5;
+    color:#555;
+    font-weight:600;
+    font-size:15px;
+}
 @media(max-width:900px){
 .office-section{
 grid-template-columns:1fr;
@@ -127,68 +135,63 @@ L.tileLayer(
 attribution:'© OpenStreetMap contributors'
 }
 ).addTo(map);
-const offices = [{
-name: "Main Office",
-    region: "Southern California",
-    lat: 33.9192,
-    lng: -118.4165,
-    address: "319 Main Street, El Segundo, CA 90245",
-    phone: "(213) 239 9700",
-    map: "https://maps.google.com/?q=319+Main+Street+El+Segundo+CA+90245"},
+const offices = [
 {
-name: "Glendale Office",
-region: "Southern California",
-lat: 34.1537,
-lng: -118.2551,
-address: "505 N. Brand Blvd., Suite 800, Glendale, CA 91203",
-phone: "(626) 351 3367",
-map: "https://maps.google.com/?q=505+N+Brand+Blvd+Suite+800+Glendale+CA"
+name:"Main Office",
+lat:33.91966,
+lng:-118.41596,
+address:"319 Main Street, El Segundo, CA 90245",
+phone:"(213) 239-9700",
+street:"https://www.google.com/maps/place/319+Main+Street+El+Segundo,+CA+90245/@33.91966,-118.4159614,3a,75y,277.33h,90t/data=!3m4!1e1!3m2!1sZ9fj4HXJO25oyBkhj-GVkg!2e0!4m2!3m1!1s0x80c2b141d5656a41:0x215dbf331db5f69d"
 },
 {
-name: "Orange County Office",
-    region: "Southern California",
-    lat: 33.6846,
-    lng: -117.8265,
-    address: "1900 Main Street, Suite 800, Irvine, CA 92614",
-    phone: "(949) 576 3922",
-    map: "https://maps.google.com/?q=1900+Main+Street+Suite+800+Irvine+CA"
+name:"Glendale Office",
+lat:34.15328,
+lng:-118.25498,
+address:"505 N Brand Blvd, Suite 800, Glendale, CA 91203",
+phone:"(626) 351-3367",
+street:"https://www.google.com/maps/@34.1532819,-118.254981,3a,75y,338.33h,105.31t"
 },
 {
-name: "San Diego Office",
-    region: "Southern California",
-    lat: 32.7132,
-    lng: -117.1606,
-    address: "185 F Street, Suite 500, San Diego, CA 92101",
-    phone: "(619) 560 0080",
-    map: "https://maps.google.com/?q=185+F+Street+Suite+500+San+Diego+CA"
+name:"Orange County Office",
+lat:33.68453,
+lng:-117.85451,
+address:"1900 Main Street, Suite 800, Irvine, CA 92614",
+phone:"(949) 576-3922",
+street:"https://www.google.com/maps/@33.6845337,-117.8545141,3a,75y,307.57h,81.7t"
 },
 {
-    name:"India Office",
-    region:"International",
-    lat:13.0827,
-    lng:80.2707,
-    address:"No.111 (141), Rajiv Gandhi Road, Kottivakkam, Chennai 600041",
-    phone:"",
-    map:"https://www.google.com/maps/search/?api=1&query=Rajiv+Gandhi+Road+Chennai"
+name:"San Diego Office",
+lat:32.71360,
+lng:-117.16433,
+address:"185 F Street, Suite 500, San Diego, CA 92101",
+phone:"(619) 560-0080",
+street:"https://www.google.com/maps/@32.7136013,-117.1643347,3a,75y,353.46h,90.57t"
 },
 {
-    name:"Egypt Office",
-    region:"International",
-    lat:30.1120,
-    lng:31.4000,
-    address:"Plot 1258, Building 6C, Office No.102, Sheraton, Cairo 11799",
-    phone:"",
-    map:"https://www.google.com/maps/search/?api=1&query=Sheraton+Cairo+11799"
+name:"India Office",
+lat:13.0827,
+lng:80.2707,
+address:"No.111 (141), Rajiv Gandhi Road, Kottivakkam, Chennai 600041",
+phone:"",
+street:"https://www.google.com/maps/search/?api=1&query=Rajiv+Gandhi+Road+Chennai"
 },
 {
-    name:"Vietnam Office",
-    region:"International",
-    lat:10.8016,
-    lng:106.6538,
-    address:"TTC Tower, 253 Hoang Van Thu St, Tan Son Hoa Ward, Ho Chi Minh City, Vietnam",
-    phone:"",
-    map:"https://www.google.com/maps/search/?api=1&query=TTC+Tower+253+Hoang+Van+Thu+Ho+Chi+Minh+City+Vietnam"
+name:"Egypt Office",
+lat:30.1120,
+lng:31.4000,
+address:"Plot 1258, Building 6C, Office No.102, Sheraton, Cairo 11799",
+phone:"",
+street:"https://www.google.com/maps/search/?api=1&query=Sheraton+Cairo+11799"
 },
+{
+name:"Vietnam Office",
+lat:10.8016,
+lng:106.6538,
+address:"TTC Tower, 253 Hoang Van Thu St, Tan Son Hoa Ward, Ho Chi Minh City, Vietnam",
+phone:"",
+street:"https://www.google.com/maps/search/?api=1&query=TTC+Tower+253+Hoang+Van+Thu+Ho+Chi+Minh+City+Vietnam"
+}
 ];
 const icon = L.circleMarker([0,0],{
     radius:6,
@@ -220,7 +223,7 @@ offices.forEach(office=>{
         ${office.address}
         </p>
         <a
-        href="${office.map}"
+        href="${office.street}"
         target="_blank"
         style="
         display:inline-block;
@@ -243,52 +246,24 @@ offices.forEach(office=>{
     });
 });
 function buildCards(list,id){
-
 const container=document.getElementById(id);
-
 list.forEach(office=>{
-
 const card=document.createElement("div");
-
 card.className="office-card";
-
 card.innerHTML=`
-
 <h3>${office.name}</h3>
 
 <p>${office.address}</p>
 
-<a href="${office.map}"
-target="_blank"
-class="street-btn">
+<button>
 View Street View
-</a>
+</button>
 
 ${office.phone ? `
 <div class="office-phone">
 📞 ${office.phone}
 </div>
 ` : ""}
-
-`;
-
-card.onclick=function(e){
-
-// don't zoom if user clicked the button
-if(e.target.tagName==="A") return;
-
-zoomOffice(
-office.lat,
-office.lng
-);
-
-};
-
-container.appendChild(card);
-
-});
-
-}
 `;
 card.querySelector("button").onclick=function(){
 window.open(
